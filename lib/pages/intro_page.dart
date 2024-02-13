@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutorial/pages/menu_page.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -18,13 +19,17 @@ class _IntroPageState extends State<IntroPage> {
       if(isConnected == false){
       titleButton = 'Conectar';
       colorButton = const Color.fromARGB(255, 44, 33, 243);
-    }
-    else{
-      titleButton = 'Desconectar';
-      colorButton = Color.fromARGB(212, 170, 0, 227);
-    }
-    });
-    
+      }
+      else{
+        titleButton = 'Desconectar';
+        colorButton = const Color.fromARGB(212, 170, 0, 227);
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => MenuPage(),
+        ));
+      }
+    });  
   }
   @override
   Widget build(BuildContext context) {
