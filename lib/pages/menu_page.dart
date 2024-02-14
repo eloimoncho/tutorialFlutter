@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutorial/components/my_menu_button.dart';
+import 'package:tutorial/pages/input_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -41,7 +42,7 @@ class MenuPage extends StatelessWidget {
             children: [
               MyMenuButton(title: 'Alert Dialog', onTap: callAlertDialog),
               const SizedBox(height: 40,),
-              MyMenuButton(title: 'Input', onTap: (){}),
+              MyMenuButton(title: 'Input', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const InputPage(),),);} ),
               const SizedBox(height: 40,),
               MyMenuButton(title: 'Get Value', onTap: (){}),
               const SizedBox(height: 40,),
