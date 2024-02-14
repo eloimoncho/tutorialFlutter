@@ -26,7 +26,7 @@ class _IntroPageState extends State<IntroPage> {
         Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context) => MenuPage(),
+            builder: (context) => const MenuPage(),
         ));
       }
     });  

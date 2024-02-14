@@ -7,10 +7,11 @@ class MyMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 120,
+        width: size.width*0.7,
         height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), 
@@ -18,7 +19,7 @@ class MyMenuButton extends StatelessWidget {
           alignment: Alignment.center,
         child: Text(
           title, 
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
