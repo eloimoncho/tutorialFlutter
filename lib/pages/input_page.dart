@@ -15,59 +15,59 @@ class InputPage extends StatelessWidget {
         title: const Text('Input Page'),
         backgroundColor: Colors.cyan,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-          children: [
-            MyInputField(title: 'Name: ' , textEditingInput: nameController),
-            const SizedBox(height: 20,),
-            MyInputField(title: 'Age: ' , textEditingInput: ageController),
-            const SizedBox(height: 40,),
-            InkWell(
-              onTap: (){
-                try{
-                  Provider.of<TableInput>(context,listen: false).addItemTable(
-                  ItemTable(
-                    name: nameController.text, 
-                    age: int.parse(ageController.text)
-                  )
-                );
-                nameController.clear();
-                ageController.clear();
-                print('llegué');
-                }
-                catch(e){
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+            children: [
+              MyInputField(title: 'Name: ' , textEditingInput: nameController),
+              const SizedBox(height: 20,),
+              MyInputField(title: 'Age: ' , textEditingInput: ageController),
+              const SizedBox(height: 40,),
+              InkWell(
+                onTap: (){
+                  try{
+                    Provider.of<TableInput>(context,listen: false).addItemTable(
+                    ItemTable(
+                      name: nameController.text, 
+                      age: int.parse(ageController.text)
+                    )
+                  );
                   nameController.clear();
                   ageController.clear();
-                  print('el valor no es un número');
-                }
-              },
-              child: Container(
-                height: 50,
-                width: 120,
-                decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(12)),
-                alignment: Alignment.center,
-                child: const Text('enter new user', style: TextStyle(color: Colors.white),),
+                  }
+                  catch(e){
+                    nameController.clear();
+                    ageController.clear();
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  width: 120,
+                  decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(12)),
+                  alignment: Alignment.center,
+                  child: const Text('enter new user', style: TextStyle(color: Colors.white),),
+                ),
               ),
+              const SizedBox(height: 40,),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height*0.55,
+                child: Consumer<TableInput>(builder: (context, value, child) {
+                  return ListView.builder(
+                    itemCount: value.tableList.length,
+                    itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text('${value.tableList[index].name}, ${value.tableList[index].age}'),
+                      trailing: IconButton(icon: 
+                      const Icon(Icons.delete_forever_rounded), 
+                      onPressed: () => value.removeItemTable(value.tableList[index]),)
+                    );
+                  },);
+                },)
+              )
+            ],
             ),
-            const SizedBox(height: 40,),
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height*0.55,
-              child: Consumer<TableInput>(builder: (context, value, child) {
-                return ListView.builder(
-                  itemCount: value.tableList.length,
-                  itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('${value.tableList[index].name}, ${value.tableList[index].age}'),
-                    trailing: IconButton(icon: 
-                    Icon(Icons.delete_forever_rounded), 
-                    onPressed: () => value.removeItemTable(value.tableList[index]),)
-                  );
-                },);
-              },)
-            )
-          ],
           ),
         ),
       ),

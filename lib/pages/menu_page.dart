@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorial/components/my_menu_button.dart';
 import 'package:tutorial/pages/input_page.dart';
+import 'package:tutorial/pages/parameters_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -37,21 +38,23 @@ class MenuPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyMenuButton(title: 'Alert Dialog', onTap: callAlertDialog),
-              const SizedBox(height: 40,),
-              MyMenuButton(title: 'Input', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const InputPage(),),);} ),
-              const SizedBox(height: 40,),
-              MyMenuButton(title: 'Get Value', onTap: (){}),
-              const SizedBox(height: 40,),
-              MyMenuButton(title: 'Parameters', onTap: (){}),
-              const SizedBox(height: 40,),
-              MyMenuButton(title: 'Video', onTap: (){}),
-              const SizedBox(height: 40,),
-              MyMenuButton(title: 'Map', onTap: (){}),
-            ],
+          child: FittedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyMenuButton(title: 'Alert Dialog', onTap: callAlertDialog),
+                const SizedBox(height: 40,),
+                MyMenuButton(title: 'Input', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const InputPage(),),);} ),
+                const SizedBox(height: 40,),
+                MyMenuButton(title: 'Get Value', onTap: (){}),
+                const SizedBox(height: 40,),
+                MyMenuButton(title: 'Parameters', onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ParametersPage(),));}),
+                const SizedBox(height: 40,),
+                MyMenuButton(title: 'Video', onTap: (){}), 
+                const SizedBox(height: 40,),
+                MyMenuButton(title: 'Map', onTap: (){}),
+              ],
+            ),
           ),
         ),
       ),
