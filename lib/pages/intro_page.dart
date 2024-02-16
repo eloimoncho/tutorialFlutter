@@ -35,9 +35,21 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   void connectMQTT() async{
-    bool canConnect = await Provider.of<MQTTClientWrapper>(context, listen: false).connectMqttClient();
-    if(canConnect){changeConnected();}
-    else {print('Error connecting');}
+    if (isConnected == false) {
+      bool canConnect =
+          await Provider.of<MQTTClientWrapper>(context, listen: false)
+              .connectMqttClient();
+      if (canConnect) {
+        changeConnected();
+      } else {
+        print('Error en la conexión');
+      }
+    } else {
+      Provider.of<MQTTClientWrapper>(context, listen: false)
+          .client
+          .disconnect();
+      changeConnected();
+    }
   }
   @override
   Widget build(BuildContext context) {

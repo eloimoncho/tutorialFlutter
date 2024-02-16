@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tutorial/components/my_menu_button.dart';
 import 'package:tutorial/pages/input_page.dart';
 import 'package:tutorial/pages/parameters_page.dart';
+import 'package:tutorial/services/my_mqtt_client.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -46,7 +48,15 @@ class MenuPage extends StatelessWidget {
                 const SizedBox(height: 40,),
                 MyMenuButton(title: 'Input', onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const InputPage(),),);} ),
                 const SizedBox(height: 40,),
-                MyMenuButton(title: 'Get Value', onTap: (){}),
+                MyMenuButton(title: 'Get Value', onTap: (){
+                  List<String> lista = Provider.of<MQTTClientWrapper>(context, listen: false).listaValueMensajes;
+                  if(lista.isNotEmpty){
+                    print(lista.last);
+                  }
+                  else{
+                    print('No hay values');
+                  }
+                  }),
                 const SizedBox(height: 40,),
                 MyMenuButton(title: 'Parameters', onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ParametersPage(),));}),
                 const SizedBox(height: 40,),
