@@ -132,19 +132,19 @@ class _ParametersPageState extends State<ParametersPage> {
                     if(isDos!){checkBoxResults.add('Dos');}
                     if(isTres!){checkBoxResults.add('Tres');}
                     if(isCuatro!){checkBoxResults.add('Cuatro');}
-                    String message = 'Ciudad:  $currentOption, CheckBox: $checkBoxResults, SliderBar: $sliderValue';
+                    String message = 'Ciudad: $currentOption, CheckBox: $checkBoxResults, SliderBar: $sliderValue';
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Mensaje'),
+                          title: const Text('Mensaje'),
                           content: Text(message),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Cierra el diálogo
                               },
-                              child: Text('Aceptar'),
+                              child: const Text('Aceptar'),
                             ),
                           ],
                         );
