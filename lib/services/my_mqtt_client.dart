@@ -1,4 +1,4 @@
-import "dart:io";
+//import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:mqtt_client/mqtt_client.dart";
@@ -17,12 +17,17 @@ enum MqttSubscriptionState { IDLE, SUBSCRIBED }
 
 class MQTTClientWrapper extends ChangeNotifier {
   List<String>listaValueMensajes = [];
-  
+  /*
   MqttServerClient client = MqttServerClient.withPort(
     '3b36b1a9f1744afba0f41671d1040340.s1.eu.hivemq.cloud', 
     'prueba_flutter', 
-    8883);
-
+    8883);*/
+  
+  
+  MqttServerClient client = MqttServerClient.withPort(
+    'broker.emqx.io', 
+    'prueba_flutter',
+    1883);
   MqttCurrentConnectionState connectionState = MqttCurrentConnectionState.IDLE;
   MqttSubscriptionState subscriptionState = MqttSubscriptionState.IDLE;
 
@@ -31,13 +36,22 @@ class MQTTClientWrapper extends ChangeNotifier {
     return await _connectClient();
   }
 
+  void _setupMqttClient() {
+    //client.secure = true;
+    //client.securityContext = SecurityContext.defaultContext;
+    client.keepAlivePeriod = 60;
+    client.onDisconnected = _onDisconnected;
+    client.onConnected = _onConnected;
+    client.onSubscribed = _onSubscribed;
+  }
+
   Future<bool> _connectClient() async {
     try {
       print('client connecting....');
       connectionState = MqttCurrentConnectionState.CONNECTING;
-      await client.connect('eloimoncho', 'mqttTEST1');
+      //await client.connect('eloimoncho', 'mqttTEST1');
 
-      //await client.connect();
+      await client.connect();
     } on Exception catch (e) {
       print('client exception - $e');
       connectionState = MqttCurrentConnectionState.ERROR_WHEN_CONNECTING;
@@ -58,14 +72,7 @@ class MQTTClientWrapper extends ChangeNotifier {
       return false;
     }
   }
-  void _setupMqttClient() {
-    client.secure = true;
-    client.securityContext = SecurityContext.defaultContext;
-    client.keepAlivePeriod = 60;
-    client.onDisconnected = _onDisconnected;
-    client.onConnected = _onConnected;
-    client.onSubscribed = _onSubscribed;
-  }
+  
 
   void publishMessage(String message, String topic) {
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
@@ -90,8 +97,8 @@ class MQTTClientWrapper extends ChangeNotifier {
     client.subscribe('Value', MqttQos.atLeastOnce);
     //client.subscribe('videoFrame', MqttQos.atLeastOnce);
     
-    //publishMessage('', 'Connect');
-    //publishMessage('', 'getValue');
+    publishMessage('', 'Connect');
+    publishMessage('', 'getValue');
 
     // print the message when it is received
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
