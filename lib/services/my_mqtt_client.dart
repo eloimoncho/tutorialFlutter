@@ -17,6 +17,7 @@ enum MqttSubscriptionState { IDLE, SUBSCRIBED }
 
 class MQTTClientWrapper extends ChangeNotifier {
   List<String>listaValueMensajes = [];
+  String lastVideoFrame = '';
   /*
   MqttServerClient client = MqttServerClient.withPort(
     '3b36b1a9f1744afba0f41671d1040340.s1.eu.hivemq.cloud', 
@@ -107,11 +108,11 @@ class MQTTClientWrapper extends ChangeNotifier {
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
     
       if (c[0].topic == 'Value') listaValueMensajes.add(message);
-    /*  if (c[0].topic == 'videoFrame') {
+      if (c[0].topic == 'videoFrame') {
         lastVideoFrame = message;
         notifyListeners();
       }
-    */ 
+    
       print('YOU GOT A NEW MESSAGE:');
       print(message);
     });

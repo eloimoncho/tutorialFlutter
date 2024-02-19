@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tutorial/components/my_menu_button.dart';
 import 'package:tutorial/pages/input_page.dart';
 import 'package:tutorial/pages/parameters_page.dart';
+import 'package:tutorial/pages/video_page.dart';
 import 'package:tutorial/services/my_mqtt_client.dart';
 
 class MenuPage extends StatelessWidget {
@@ -60,7 +61,7 @@ class MenuPage extends StatelessWidget {
                 const SizedBox(height: 40,),
                 MyMenuButton(title: 'Parameters', onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ParametersPage(),));}),
                 const SizedBox(height: 40,),
-                MyMenuButton(title: 'Video', onTap: (){}), 
+                MyMenuButton(title: 'Video', onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const VideoPage(),));}), 
                 const SizedBox(height: 40,),
                 MyMenuButton(title: 'Map', onTap: (){}),
               ],
