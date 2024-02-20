@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:latlong2/latlong.dart';
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZWxvaW1vbmNobyIsImEiOiJjbHN0OTBpbmwweXg3Mmpxa3hzYXp4MTRqIn0.unS27qTvHsSX7RikaFOCyQ';
 class MapPage extends StatefulWidget {
@@ -48,6 +49,20 @@ class _MapPageState extends State<MapPage> {
       appBar: AppBar(
         backgroundColor: Colors.cyan, 
         title: const Text('Map'),
+        actions:[
+          IconButton(onPressed: (){
+            setState(() {
+              if(markers.isNotEmpty){
+                markers.removeLast();
+                if(polylines.isNotEmpty){
+                  polylines.removeLast();
+                }
+              }
+            });
+          }, 
+          icon: const Icon(Icons.backspace_outlined)),
+
+        ]
       ),
       body: FlutterMap(
         mapController: mapController,
@@ -72,6 +87,23 @@ class _MapPageState extends State<MapPage> {
             ),
           PolylineLayer(polylines: [...polylines])
         ],
+      ),
+      floatingActionButton: SpeedDial(
+        backgroundColor: Colors.indigo,
+        animatedIcon: AnimatedIcons.menu_close,
+        spacing: 10,
+        overlayOpacity: 0.4,
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.clear_sharp),
+            label: 'Delete route',
+            onTap: () {
+              setState(() {
+                markers.clear();
+                polylines.clear();
+              });
+            },
+          )],
       ),
     );
   }
