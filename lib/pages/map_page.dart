@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
+
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZWxvaW1vbmNobyIsImEiOiJjbHN0OTBpbmwweXg3Mmpxa3hzYXp4MTRqIn0.unS27qTvHsSX7RikaFOCyQ';
+
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -14,6 +19,51 @@ class _MapPageState extends State<MapPage> {
   MapController mapController = MapController();
   List<Marker> markers = [];
   List<Polyline> polylines= [];
+  List<Marker> savedMarkers = [];
+  List<Polyline> savedPolylines= [];
+
+  void _cargarDesdeServidor()async{
+    try{
+      final response = await http.get(Uri.parse('http://192.168.1.63:4000/data'));
+      if(response.statusCode ==200){
+        List<dynamic> data = jsonDecode(response.body);
+        if(data.isNotEmpty){
+          print(data);
+          List<dynamic> coordenadas = data[data.length -1];
+          setState(() {
+            markers = coordenadas.map((item) => Marker(point: LatLng(item['lat'], item['lng']), 
+            child: Transform.translate(
+              offset: const Offset(-5, -21),
+              child: const Icon(
+                Icons.location_on,
+                size:40,
+                color: Colors.red,
+              ),
+            )
+          ),
+          ).toList();
+
+          polylines = [];
+          for(int i = 1; i<markers.length;i++){
+            polylines.add(
+              Polyline(
+                points: [
+                  markers[i-1].point,
+                  markers[i].point,
+                ],
+                strokeWidth: 2.0,
+                color: Colors.amber,    
+              ),
+            );
+          }
+          });
+        }
+      }
+    }
+    catch(e){
+      print('error al cargar $e');
+    }
+  }
 
   void _onMapTapped(TapPosition tapPosition, LatLng latLng){
     setState(() {
@@ -71,7 +121,7 @@ class _MapPageState extends State<MapPage> {
           minZoom: 1,
           maxZoom: 20,
           initialZoom: 15,
-          interactionOptions: InteractionOptions(enableMultiFingerGestureRace: true),
+          interactionOptions: const InteractionOptions(enableMultiFingerGestureRace: true),
           onTap: _onMapTapped,
         ),
         children: [
@@ -95,7 +145,16 @@ class _MapPageState extends State<MapPage> {
         overlayOpacity: 0.4,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.clear_sharp),
+            child: const Icon(Icons.upload_sharp),
+            label: 'Load route',
+            onTap: () {
+              setState(() {
+                _cargarDesdeServidor();
+              });
+            },
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.clear_sharp),
             label: 'Delete route',
             onTap: () {
               setState(() {
