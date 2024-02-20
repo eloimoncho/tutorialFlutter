@@ -25,7 +25,7 @@ class _MapPageState extends State<MapPage> {
   void _cargarDesdeServidor()async{
     try{
       final response = await http.get(Uri.parse('http://192.168.1.63:4000/data'));
-      if(response.statusCode ==200){
+      if(response.statusCode == 200){
         List<dynamic> data = jsonDecode(response.body);
         if(data.isNotEmpty){
           print(data);
@@ -62,6 +62,27 @@ class _MapPageState extends State<MapPage> {
     }
     catch(e){
       print('error al cargar $e');
+    }
+  }
+
+  void _guardarDesdeServidor(List<dynamic> coordenadas) async{
+    try{
+      final response = await http.post(
+        Uri.parse('http://192.168.1.63:4000/data'),
+        headers: <String,String>{
+          'Content-Type':'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(coordenadas),
+      );
+      if(response.statusCode == 200){
+        print('Coordenadas guardadas correctamente');
+      }
+      else{
+        print('Error al guardar coordenadas');
+      }
+    }
+    catch(e){
+      print('error al guardar $e');
     }
   }
 
@@ -144,6 +165,20 @@ class _MapPageState extends State<MapPage> {
         spacing: 10,
         overlayOpacity: 0.4,
         children: [
+          SpeedDialChild(
+            child: const Icon(Icons.save_alt_sharp),
+            label: 'Save route',
+            onTap: () {
+              setState(() {
+                _guardarDesdeServidor(markers.map((marker) => {
+                  'lat':marker.point.latitude,
+                  'lng':marker.point.longitude,
+                }).toList());
+                savedMarkers = List.from(markers);
+                savedPolylines = List.from(polylines);
+              });
+            },
+          ),
           SpeedDialChild(
             child: const Icon(Icons.upload_sharp),
             label: 'Load route',
