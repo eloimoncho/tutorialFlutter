@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tutorial/pages/menu_page.dart';
 import 'package:tutorial/services/my_mqtt_client.dart';
+import 'package:tutorial/services/socket_service.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -40,6 +41,8 @@ class _IntroPageState extends State<IntroPage> {
           await Provider.of<MQTTClientWrapper>(context, listen: false)
               .connectMqttClient();
       if (canConnect) {
+        Provider.of<SocketService>(context, listen: false).setContext(context);
+        Provider.of<SocketService>(context, listen: false).initSocket();
         changeConnected();
       } else {
         print('Error en la conexión');
